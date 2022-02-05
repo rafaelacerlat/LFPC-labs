@@ -1,6 +1,5 @@
 package Lab1;
 
-import Test1.TransitionRuleTest;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
@@ -22,14 +21,17 @@ public class FiniteAutomata {
 
     public static FiniteAutomata buildFromGrammar(Grammar grammar) {
 
+        // Creating states hierarchy, where getFrom is key for states Map
         grammar.getRules().stream()
-                .map(TransitionRuleTest::getFrom)
+                .map(TransitionRule::getFrom)
                 .map(State::new)
                 .forEach(state -> states.put(state.getName(), state));
 
-        for (TransitionRuleTest rule : grammar.getRules()) {
+        for (TransitionRule rule : grammar.getRules()) {
             State currentState = states.get(rule.getFrom());
             String transition = rule.getTo();
+
+            // Separating transition string into using and nextState
 
             char using = transition.charAt(0);
 
@@ -48,26 +50,28 @@ public class FiniteAutomata {
 
     public static void printMatrix() {
         int position = 0;
-        int positionWhenDestinationNull = 0;
-        List<Character> listOfNonTerminalVariables = new ArrayList<>();
-        Map<Character, Integer> charactersPositions = new HashMap<>();
+        int positionWhenDestinationNull = 0; // for final states index/position in matrix
+        List<Character> nonTerminalVariables = new ArrayList<>();
+        Map<Character, Integer> charactersPositions = new HashMap<>(); // nonTerminalVariables position in matrix
 
         for (Map.Entry<Character, State> entry : states.entrySet()) {
             Character key = entry.getKey();
             charactersPositions.put(key, position);
-            listOfNonTerminalVariables.add(key);
+            nonTerminalVariables.add(key);
             positionWhenDestinationNull = charactersPositions.size();
             position += 1;
         }
 
-        char[][] matrix = new char[listOfNonTerminalVariables.size() + finalStates][listOfNonTerminalVariables.size() + finalStates];
+        char[][] matrix = new char[nonTerminalVariables.size() + finalStates][nonTerminalVariables.size() + finalStates];
 
         for (Map.Entry<Character, State> entry : states.entrySet()) {
-            Character key = entry.getKey();
+            Character key = entry.getKey(); // vertex1
             State value = entry.getValue();
+
+            // iterating through all transitions
             for (Map.Entry<Character, State> transitionsEntry : value.transitions.entries()) {
-                char transition = transitionsEntry.getKey();
-                char destination = transitionsEntry.getValue().name;
+                char transition = transitionsEntry.getKey(); // edge weight
+                char destination = transitionsEntry.getValue().name; // vertex2
                 if (key.equals(destination)) {
                     matrix[charactersPositions.get(key)][charactersPositions.get(key)] = transition;
                 } else if (!(destination == STATE_FINISH)) {
@@ -93,27 +97,27 @@ public class FiniteAutomata {
 
     public boolean test(String input) {
         State currentState = start;
-        int idx = 0;
+        int index = 0;
 
-        while (idx < input.length()) {
-            boolean lastSymbol = input.charAt(idx) == input.charAt(input.length() - 1);
+        while (index < input.length()) {
+            boolean lastSymbol = index == input.length() - 1; // if we reached the last symbol in given word
             Optional<Collection<State>> stateOptional =
-                    currentState.getNextStateFor(input.charAt(idx), lastSymbol);
+                    currentState.getNextStateFor(input.charAt(index), lastSymbol);
             if (stateOptional.get().isEmpty()) {
                 break;
             }
 
-            currentState = stateOptional.get().iterator().next();
-            idx++;
+            currentState = stateOptional.get().iterator().next(); //stateOptional becomes currentState
+            index++;
         }
 
-        return currentState.equals(State.FINAL) && idx == input.length();
+        return currentState.equals(State.FINAL) && index == input.length();
     }
 
     static class State {
 
         private final char name;
-        private final Multimap<Character, State> transitions;
+        private final Multimap<Character, State> transitions; // Map that allows multiple value for the same key
 
         State(char name) {
             this.name = name;
@@ -131,9 +135,9 @@ public class FiniteAutomata {
         }
 
         Optional<Collection<State>> getNextStateFor(char ch, boolean lastSymbol) {
-            return lastSymbol ? Optional.ofNullable(
+            return lastSymbol ? Optional.ofNullable( // if lastSymbol, it's taken as a finalState
                     transitions.get(ch).stream().filter(f -> f.name == '-').collect(Collectors.toList())) :
-                    Optional.ofNullable(transitions.get(ch));
+                    Optional.ofNullable(transitions.get(ch)); // get next state from given symbol/terminalVariable
         }
     }
 }
