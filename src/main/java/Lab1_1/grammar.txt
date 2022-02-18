@@ -1,0 +1,9 @@
+S->cI
+I->bJ
+I->fI
+J->nJ
+J->cS
+I->eK
+K->nK
+I->e
+K->m
