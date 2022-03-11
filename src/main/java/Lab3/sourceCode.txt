@@ -1,0 +1,26 @@
+void main() {
+    string s = "hello";
+    int a = 5;
+    int b = a + 63.5;
+    float c = averageFromTwo (a, b);
+    print(c);
+}
+
+~
+// comment
+
+decimal averageFromTwo(a, b) {
+    average = (a + b)/2;
+    return average;
+}
+
+boolean isDigit(n){
+    return n >= 0 and n <= 9;
+}
+
+int findMax(a,b){
+    if(a>b){
+        return a;
+    }
+    else return b;
+}
