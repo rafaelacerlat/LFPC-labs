@@ -21,7 +21,7 @@ Value: a  Type: identifier
 Value: +  Type: plus
 Value: 63.5  Type: decimal
 Value: ;  Type: semicolon
-Value: float  Type: identifier
+Value: decimal  Type: DECIMAL
 Value: c  Type: identifier
 Value: =  Type: assign
 Value: averageFromTwo  Type: identifier
