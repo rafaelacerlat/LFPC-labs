@@ -86,10 +86,10 @@ public class Lexer {
 
             default:
                 // digit-start
-                if (isAlphabetic(c)) {
+                if (isDigit(c)) {
                     number();
                 // identifier-start
-                } else if (isLetter(c)) {
+                } else if (isAlphabetic(c)) {
                     identifier();
                 } else {
                     System.out.println( "Unexpected character: " + c);  // error
