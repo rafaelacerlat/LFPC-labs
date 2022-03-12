@@ -1,7 +1,9 @@
 package Lab3;
 
 import java.util.*;
+import java.lang.*;
 import static Lab3.TokenType.*;
+import static java.lang.Character.*;
 
 public class Lexer {
     private final String input;
@@ -84,7 +86,7 @@ public class Lexer {
 
             default:
                 // digit-start
-                if (isDigit(c)) {
+                if (isAlphabetic(c)) {
                     number();
                 // identifier-start
                 } else if (isLetter(c)) {
@@ -98,9 +100,10 @@ public class Lexer {
 
     // identifier method
     private void identifier() {
-        while (isAlphaNumeric(getCurrentChar())) current++;
+        // a character that is either a letter or a number
+        while (isAlphabetic(getCurrentChar()) || isDigit(getCurrentChar())) current++;
 
-    // keyword-type
+        // keyword-type
         String value = input.substring(start, current);
         TokenType type = keywords.get(value);
         if (type == null) type = identifier;
@@ -139,7 +142,6 @@ public class Lexer {
     // isEndOfFile method
     private boolean isEndOfFile() { return current >= input.length();}
 
-
     // match method
     private boolean match(char expected) {
         if (getCurrentChar() != expected) return false;
@@ -160,23 +162,6 @@ public class Lexer {
         return input.charAt(current + 1);
     }
 
-    // isLetter method
-    private boolean isLetter(char c) {
-        return (c >= 'a' && c <= 'z') ||
-                (c >= 'A' && c <= 'Z');
-    }
-
-    // a character that is either a letter or a number
-    private boolean isAlphaNumeric(char c) {
-        return isLetter(c) || isDigit(c);
-    }
-
-    // isDigit method
-    private boolean isDigit(char c) {
-        return c >= '0' && c <= '9';
-    }
-
-
     private void addToken(TokenType type) {
         String value;
         if (type == string) {
@@ -185,5 +170,13 @@ public class Lexer {
         }
         else { value = input.substring(start, current); }
         tokens.add(new Token(type, value));
+    }
+
+    void checkOrder(List<Token> tokens){
+        for ( int i = 0; i < tokens.size() - 1; i++) {
+           if( tokens.get(i).getType() == tokens.get(i+1).getType()){
+               System.out.println("There are 2 or more adjacent tokens of the same type in the source code!");
+           }
+        }
     }
 }

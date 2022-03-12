@@ -15,6 +15,7 @@ public class Main {
         String str = String.join("\n", Files.readAllLines(Paths.get(inputPath)));
         Lexer lexer = new Lexer(str);
         List<Token> tokens = lexer.tokenize();
+        lexer.checkOrder(tokens);
         for (Token token : tokens) {
             System.out.println(token.print());
         }

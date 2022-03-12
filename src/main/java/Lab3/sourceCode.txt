@@ -2,7 +2,7 @@ void main() {
     string s = "hello";
     int a = 5;
     int b = a + 63.5;
-    float c = averageFromTwo (a, b);
+    decimal c = averageFromTwo (a, b);
     print(c);
 }
 
@@ -24,3 +24,4 @@ int findMax(a,b){
     }
     else return b;
 }
+
