@@ -173,7 +173,7 @@ public class Lexer {
     }
 
     void checkOrder(List<Token> tokens){
-        for ( int i = 0; i < tokens.size() - 1; i++) {
+        for (int i = 0; i < tokens.size() - 1; i++) {
            if( tokens.get(i).getType() == tokens.get(i+1).getType()){
                System.out.println("There are 2 or more adjacent tokens of the same type in the source code!");
            }
