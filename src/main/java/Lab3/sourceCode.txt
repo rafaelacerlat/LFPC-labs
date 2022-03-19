@@ -6,7 +6,6 @@ void main() {
     print(c);
 }
 
-~
 // comment
 
 decimal averageFromTwo(a, b) {

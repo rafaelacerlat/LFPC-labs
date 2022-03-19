@@ -1,9 +1,8 @@
 package Lab3;
 
 import java.util.*;
-import java.lang.*;
-import static Lab3.TokenType.*;
 import static java.lang.Character.*;
+import static Lab3.TokenType.*;
 
 public class Lexer {
     private final String input;
@@ -93,6 +92,7 @@ public class Lexer {
                     identifier();
                 } else {
                     System.out.println( "Unexpected character: " + c);  // error
+                    System.exit(current);
                 }
                 break;
         }
@@ -133,6 +133,7 @@ public class Lexer {
 
         if (isEndOfFile()) {
             System.out.println( "Unterminated string");
+            System.exit(current);
         }
 
         current++;
@@ -176,6 +177,7 @@ public class Lexer {
         for (int i = 0; i < tokens.size() - 1; i++) {
            if( tokens.get(i).getType() == tokens.get(i+1).getType()){
                System.out.println("There are 2 or more adjacent tokens of the same type in the source code!");
+               System.exit(i);
            }
         }
     }
